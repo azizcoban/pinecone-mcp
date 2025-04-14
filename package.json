@@ -1,0 +1,52 @@
+{
+  "name": "pinecone-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for interacting with Pinecone vector database",
+  "main": "dist/index.js",
+  "bin": {
+    "pinecone-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc -w",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/pinecone-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/pinecone-mcp/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/pinecone-mcp#readme",
+  "keywords": [
+    "mcp",
+    "pinecone",
+    "vector-database",
+    "ai",
+    "modelcontextprotocol"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.1.0",
+    "@pinecone-database/pinecone": "^1.1.2",
+    "dotenv": "^16.3.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
