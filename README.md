@@ -38,7 +38,7 @@ pinecone-mcp
 You can also install it from GitHub:
 
 ```bash
-npx github:YOUR_USERNAME/pinecone-mcp
+npx github:azizcoban/pinecone-mcp
 ```
 
 ## Integration with AI Agents

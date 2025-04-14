@@ -20,12 +20,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_USERNAME/pinecone-mcp.git"
+    "url": "git+https://github.com/azizcoban/pinecone-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/pinecone-mcp/issues"
+    "url": "https://github.com/azizcoban/pinecone-mcp/issues"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/pinecone-mcp#readme",
+  "homepage": "https://github.com/azizcoban/pinecone-mcp#readme",
   "keywords": [
     "mcp",
     "pinecone",
