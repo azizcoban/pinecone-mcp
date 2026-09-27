@@ -158,7 +158,6 @@ server.tool(
   async ({ indexName, host }) => {
     try {
       assertIndexAllowed(indexName);
-      assertNamespaceAllowed(namespace);
 
       // Get the index by name and host if provided
       const index = host
