@@ -78,6 +78,17 @@ You can also run directly from GitHub:
 npx github:azizcoban/pinecone-mcp
 ```
 
+## Least-privilege policy
+
+You can restrict which indexes and namespaces the agent is allowed to access:
+
+```bash
+PINECONE_ALLOWED_INDEXES=products,public-docs
+PINECONE_ALLOWED_NAMESPACES=production,docs
+```
+
+Both variables accept comma-separated allowlists. When unset, the server keeps its current unrestricted read behavior.
+
 ## Security notes
 
 - The Pinecone API key is read from `PINECONE_API_KEY`; do not commit credentials.
