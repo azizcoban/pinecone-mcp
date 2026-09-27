@@ -22,6 +22,33 @@ if (!process.env.PINECONE_API_KEY) {
 // This will use API key from environment variable PINECONE_API_KEY
 const pinecone = new Pinecone();
 
+const parseAllowlist = (value?: string) =>
+  value
+    ?.split(",")
+    .map((item) => item.trim())
+    .filter(Boolean) ?? [];
+
+const allowedIndexes = parseAllowlist(process.env.PINECONE_ALLOWED_INDEXES);
+const allowedNamespaces = parseAllowlist(process.env.PINECONE_ALLOWED_NAMESPACES);
+
+function assertIndexAllowed(indexName: string) {
+  if (allowedIndexes.length > 0 && !allowedIndexes.includes(indexName)) {
+    throw new Error(`Access to Pinecone index "${indexName}" is not allowed by policy`);
+  }
+}
+
+function assertNamespaceAllowed(namespace?: string) {
+  if (
+    namespace &&
+    allowedNamespaces.length > 0 &&
+    !allowedNamespaces.includes(namespace)
+  ) {
+    throw new Error(
+      `Access to Pinecone namespace "${namespace}" is not allowed by policy`
+    );
+  }
+}
+
 // Create an MCP server
 const server = new McpServer({
   name: "Pinecone MCP Server",
@@ -43,13 +70,18 @@ server.tool(
         ? indexesResponse
         : indexesResponse.indexes ?? [];
 
-      const indexList = indexes.map((index: any) => ({
-        name: index.name,
-        dimension: index.dimension,
-        metric: index.metric,
-        status: index.status,
-        host: index.host,
-      }));
+      const indexList = indexes
+        .filter(
+          (index: any) =>
+            allowedIndexes.length === 0 || allowedIndexes.includes(index.name)
+        )
+        .map((index: any) => ({
+          name: index.name,
+          dimension: index.dimension,
+          metric: index.metric,
+          status: index.status,
+          host: index.host,
+        }));
 
       return {
         content: [
@@ -82,6 +114,8 @@ server.tool(
   { indexName: z.string().describe("The name of the index to describe") },
   async ({ indexName }) => {
     try {
+      assertIndexAllowed(indexName);
+
       // Describe the index
       const indexDescription = await pinecone.describeIndex(indexName);
 
@@ -123,6 +157,9 @@ server.tool(
   },
   async ({ indexName, host }) => {
     try {
+      assertIndexAllowed(indexName);
+      assertNamespaceAllowed(namespace);
+
       // Get the index by name and host if provided
       const index = host
         ? pinecone.index(indexName, host)
@@ -172,6 +209,9 @@ server.tool(
   },
   async ({ indexName, host, ids, namespace }) => {
     try {
+      assertIndexAllowed(indexName);
+      assertNamespaceAllowed(namespace);
+
       // Get the index by name and host if provided
       const index = host
         ? pinecone.index(indexName, host)
@@ -285,6 +325,9 @@ server.tool(
     includeMetadata = true,
   }) => {
     try {
+      assertIndexAllowed(indexName);
+      assertNamespaceAllowed(namespace);
+
       // Get the index by name and host if provided
       const index = host
         ? pinecone.index(indexName, host)
@@ -485,6 +528,9 @@ server.tool(
   },
   async ({ indexName, host, namespace, prefix, limit, paginationToken }) => {
     try {
+      assertIndexAllowed(indexName);
+      assertNamespaceAllowed(namespace);
+
       // Get the index by name and host if provided
       const index = host
         ? pinecone.index(indexName, host)
