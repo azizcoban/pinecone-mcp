@@ -39,7 +39,11 @@ server.tool(
       const indexesResponse = await pinecone.listIndexes();
 
       // Format the response - indexesResponse is not an array but an object with indexes property
-      const indexList = (Array.isArray(indexesResponse) ? indexesResponse : []).map((index: any) => ({
+      const indexes = Array.isArray(indexesResponse)
+        ? indexesResponse
+        : indexesResponse.indexes ?? [];
+
+      const indexList = indexes.map((index: any) => ({
         name: index.name,
         dimension: index.dimension,
         metric: index.metric,
